@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Systemy Rozproszone</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding-top: 50px;
+        }
+        .menu {
+            margin-top: 20px;
+        }
+        a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: blue;
+        }
+        .flash-messages {
+            margin: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            color: #000;
+        }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <h1>SYSTEMY ROZPROSZONE</h1>
+    <div class="menu">
+        <a href="{{ url_for('login') }}">Logowanie</a>
+        <a href="{{ url_for('signup') }}">Rejestracja</a>
+    </div>
+
+    <!-- Miejsce na komunikaty flash -->
+    <div class="flash-messages">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="{{ category }}">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Miejsce na zawartość strony -->
+    <div>
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>
