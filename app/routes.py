@@ -1,6 +1,12 @@
 from flask import render_template, redirect, url_for, request, flash
 from app import app, db
 from app.models import User
+
+from flask_mail import Message
+from app import mail, app
+from flask import url_for
+from app.email import send_reset_email
+
 users = {}
 
 
@@ -8,10 +14,6 @@ users = {}
 @app.route('/')
 def index():
     return redirect(url_for('login'))
-
-
-# Przykładowe dane użytkownika dla celów demonstracyjnych
-users = {"user1": "password1"}
 
 # logowanie
 @app.route('/signup', methods=['GET', 'POST'])
@@ -57,14 +59,41 @@ def login():
         return redirect(url_for('menu'))
     return render_template('login.html')
 
-
-# resetowanie hasła
-@app.route('/reset_password')
+@app.route('/reset_password', methods=['GET', 'POST'])
 def reset_password():
-    # Tutaj logika dla resetowania hasła
-    return render_template('reset_password.html')
+    if request.method == 'POST':
+        email = request.form['email']
+        user = User.query.filter_by(email=email).first()
+        if user:
+            send_reset_email(user)
+            flash('Instrukcje resetowania hasła zostały wysłane na Twój adres email.', 'info')
+        else:
+            flash('Nie ma konta z tym adresem email.', 'warning')
+        return redirect(url_for('login'))
+    return render_template('reset_request.html')
+
+@app.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_token(token):
+    user = User.verify_reset_token(token)
+    if not user:
+        flash('To jest nieprawidłowy lub wygasły token', 'warning')
+        return redirect(url_for('reset_request'))
+    if request.method == 'POST':
+        password = request.form['password']
+        user.set_password(password)
+        db.session.commit()
+        flash('Twoje hasło zostało zaktualizowane!', 'success')
+        return redirect(url_for('login'))
+    return render_template('reset_token.html')
+
+# @app.route('/reset_password')
+# def reset_password():
+#     # Tutaj logika dla resetowania hasła
+#     return render_template('reset_password.html')
+
 
 @app.route('/menu')
 def menu():
     # Tutaj wyświetlamy menu po pomyślnym zalogowaniu
     return render_template('menu.html')
+
