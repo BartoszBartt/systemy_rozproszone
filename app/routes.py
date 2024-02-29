@@ -4,7 +4,6 @@ from app.models import User
 
 from flask_mail import Message
 from app import mail, app
-from flask import url_for
 from app.email import send_reset_email
 
 users = {}
@@ -85,11 +84,6 @@ def reset_token(token):
         flash('Twoje hasło zostało zaktualizowane!', 'success')
         return redirect(url_for('login'))
     return render_template('reset_token.html')
-
-# @app.route('/reset_password')
-# def reset_password():
-#     # Tutaj logika dla resetowania hasła
-#     return render_template('reset_password.html')
 
 
 @app.route('/menu')

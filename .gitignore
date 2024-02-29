@@ -1,0 +1,50 @@
+# Pliki związane z wirtualnym środowiskiem (np. venv, virtualenv, env)
+/venv/
+/.venv/
+/env/
+
+# Pliki związane z cache'em, pliczkami tymczasowymi itp.
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pyz
+*.pyzw
+*.pyw
+*.pyj
+
+# Pliki związane z logami
+*.log
+
+# Pliki związane z plikami wygenerowanymi podczas działania aplikacji (np. pliczki generowane przez Flask)
+instance/
+*.pyc
+
+# Pliki związane z testami
+/tests/
+
+# Pliki związane z backupami
+*.bak
+*.swp
+
+# Pliki konfiguracyjne IDE
+/.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Pliki związane z bazą danych
+*.sqlite
+*.db
+
+
+# Pliki generowane przez Docker
+.dockerignore
+Dockerfile*
+docker-compose.yml
+docker-compose.override.yml
+
+# Pliki związane z wydaniem aplikacji
+*.egg-info/
+dist/
+build/
